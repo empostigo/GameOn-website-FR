@@ -12,9 +12,6 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 
-// Get the close button element
-const closeBtn = document.querySelector(".close")
-
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
@@ -22,6 +19,11 @@ modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 function launchModal() {
   modalbg.style.display = "block";
 }
+
+// Modal window closing implementation
+
+// Get the close button element
+const closeBtn = document.querySelector(".close")
 
 // Wait for close event
 closeBtn.addEventListener("click", closeModal)
