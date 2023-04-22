@@ -20,6 +20,7 @@ function launchModal() {
   modalbg.style.display = "block";
 }
 
+///////////////////////////////////////////////////////////////////////////////
 // Modal window closing implementation
 
 // Get the close button element
@@ -33,3 +34,15 @@ function closeModal() {
   modalbg.style.display = "none"    // Set display to none
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// form field format validation functions
+
+// first and last name
+const validateNames = (name) => {
+  return name.length >= 2
+}
+
+// email address
+const validateEmail = (email) => {
+  const pattern = ""
+}
