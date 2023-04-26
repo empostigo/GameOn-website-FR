@@ -38,9 +38,17 @@ function closeModal() {
 // form field format validation functions
 
 // first and last name
-const validateNames = (name) => {
-// firstname and lastname must have min length of 2 characters
-  return name.length >= 2       
+const validateNames = (...names) => {
+  for(let name of names) {
+    if(name.value.length < 2) {
+    const label = name.labels[0]
+    const span = document.createElement("span")
+    span.className = "error"
+    const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} de plus de deux lettres`
+    name.insertAdjacentElement("afterend", span)
+    span.textContent = spanText
+    }
+  }
 }
 
 // email address
@@ -82,4 +90,26 @@ const validateNbContest = (nb) => {
 // Is there a radio button checked for the city ?
 const validateCity = () => {
   return document.querySelectorAll(".city-choice:checked").length ? true : false
+}
+
+// Remove previous error messages
+const errorMessageRemove = () => {
+  spanError = document.querySelectorAll("span.error")
+  console.log(spanError)
+  for(let span of spanError)
+    span.remove()
+}
+
+const firstName = document.getElementById("first")
+const lastName = document.getElementById("last")
+
+// Prevent form submission before data validation
+const form = document.getElementById("form")
+form.addEventListener("submit", (event) => {
+  event.preventDefault()
+})
+
+const validate = () => {
+  errorMessageRemove()
+  validateNames(firstName, lastName)
 }
