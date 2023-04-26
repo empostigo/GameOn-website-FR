@@ -93,7 +93,7 @@ const validateCity = () => {
 }
 
 // Remove previous error messages
-const errorMessageRemove = () => {
+const errorMessagesRemove = () => {
   spanError = document.querySelectorAll("span.error")
   console.log(spanError)
   for(let span of spanError)
@@ -110,6 +110,6 @@ form.addEventListener("submit", (event) => {
 })
 
 const validate = () => {
-  errorMessageRemove()
+  errorMessagesRemove()
   validateNames(firstName, lastName)
 }
