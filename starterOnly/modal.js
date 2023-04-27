@@ -49,6 +49,13 @@ const insertErrorMessage = (element, text = "") => {
     return span
 }
 
+// Remove previous error messages
+const errorMessagesRemove = () => {
+  spanError = document.querySelectorAll("span.error")
+  for(let span of spanError)
+    span.remove()
+}
+
 // first and last name
 const validateNames = (...names) => {
   let errorFlag = true
@@ -140,13 +147,6 @@ const validateTerms = () => {
   return errorFlag
 }
 
-// Remove previous error messages
-const errorMessagesRemove = () => {
-  spanError = document.querySelectorAll("span.error")
-  for(let span of spanError)
-    span.remove()
-}
-
 const firstName = document.getElementById("first")
 const lastName = document.getElementById("last")
 const numberContests = document.getElementById("quantity")
@@ -172,5 +172,4 @@ const validate = () => {
 
   if(!errorFlag)
     form.submit()
-    
 }
