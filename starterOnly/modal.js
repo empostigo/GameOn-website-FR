@@ -38,7 +38,7 @@ function closeModal() {
 // form field format validation functions
 
 // Insert span for error messages
-const insertErrorMessage = (element, text) => {
+const insertErrorMessage = (element, text = "") => {
     const span = document.createElement("span")
     span.className = "error"
     element.insertAdjacentElement("afterend", span)
@@ -51,11 +51,11 @@ const insertErrorMessage = (element, text) => {
 
 // first and last name
 const validateNames = (...names) => {
-  const errorFlag = true
+  let errorFlag = true
   for(let name of names) {
     if(name.value.length < 2) {
       const label = name.labels[0]
-      const span = insertErrorMessage(name, "test!")
+      const span = insertErrorMessage(name)
       const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`
       span.textContent = spanText
 
@@ -99,12 +99,29 @@ const validateNames = (...names) => {
 // The number of contests must be a number...
 // So get the type of the information returned by the form
 const validateNbContest = (nb) => {
-  return typeof(nb) === 'number'
+  let errorFlag = true
+  const castNb = parseInt(nb.value)
+  if(isNaN(castNb) || castNb < 0) {
+    insertErrorMessage(nb, "Merci de saisir un nombre positif ou zéro")
+    errorFlag = false
+  }
+
+  return errorFlag
 }
 
 // Is there a radio button checked for the city ?
 const validateCity = () => {
-  return document.querySelectorAll(".city-choice:checked").length ? true : false
+  let errorFlag = true
+
+  radioCheckedList = document.querySelectorAll(".city-choice:checked")
+  if(!radioCheckedList.length) {
+    const lastRadioNode = document.querySelectorAll(".city-choice")
+    insertErrorMessage(lastRadioNode.item(lastRadioNode.length - 1), "Merci de sélectionner une ville pour participer à un tournoi")
+
+    errorFlag = false
+  }
+
+  return errorFlag
 }
 
 // Remove previous error messages
@@ -116,6 +133,7 @@ const errorMessagesRemove = () => {
 
 const firstName = document.getElementById("first")
 const lastName = document.getElementById("last")
+const numberContests = document.getElementById("quantity")
 
 // Prevent form submission before data validation
 const form = document.getElementById("form")
@@ -124,9 +142,18 @@ form.addEventListener("submit", (event) => {
 })
 
 const validate = () => {
-  errorMessagesRemove()
-  validateNames(firstName, lastName)
 
-  if(!document.querySelectorAll("span.error").length)
+  let errorFlags = []
+
+  errorMessagesRemove()
+
+  errorFlags.push(validateNames(firstName, lastName))
+  errorFlags.push(validateNbContest(numberContests))
+  errorFlags.push(validateCity())
+
+  const errorFlag = errorFlags.some(b => b === false)
+
+  if(!errorFlag)
     form.submit()
+    
 }
