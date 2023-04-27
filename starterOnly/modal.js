@@ -109,7 +109,8 @@ const validateNbContest = (nb) => {
   let errorFlag = true
   const castNb = parseInt(nb.value)
   if(isNaN(castNb) || castNb < 0) {
-    insertErrorMessage(nb, "Merci de saisir un nombre positif ou zéro")
+    const errorMessage = "Merci de saisir un nombre positif ou zéro"
+    insertErrorMessage(nb, errorMessage)
     errorFlag = false
   }
 
@@ -124,7 +125,8 @@ const validateCity = () => {
   if(!radioCheckedList.length) {
     const lastRadioNode = document.querySelectorAll(".city-choice")
     const label = lastRadioNode.item(lastRadioNode.length - 1).labels[0]
-    insertErrorMessage(label, "Merci de sélectionner une ville pour participer à un tournoi")
+    const errorMessage = "Merci de sélectionner une ville pour participer à un tournoi"
+    insertErrorMessage(label, errorMessage)
 
     errorFlag = false
   }
@@ -139,7 +141,8 @@ const validateTerms = () => {
   const term = document.getElementById("checkbox1")
   if(!term.checked) {
     const label = term.labels[0]
-    insertErrorMessage(label, "Merci d'accepter les conditions d'utilisation")
+    const errorMessage = "Merci d'accepter les conditions d'utilisation"
+    insertErrorMessage(label, errorMessage)
 
     errorFlag = false
   }
