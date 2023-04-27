@@ -37,15 +37,25 @@ function closeModal() {
 ///////////////////////////////////////////////////////////////////////////////
 // form field format validation functions
 
+// Insert span for error messages
+const insertErrorMessage = (element, text) => {
+    const span = document.createElement("span")
+    span.className = "error"
+    element.insertAdjacentElement("afterend", span)
+
+    if(text.length > 0)
+      span.textContent = text
+
+    return span
+}
+
 // first and last name
 const validateNames = (...names) => {
   for(let name of names) {
     if(name.value.length < 2) {
     const label = name.labels[0]
-    const span = document.createElement("span")
-    span.className = "error"
+    const span = insertErrorMessage(name, "test!")
     const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`
-    name.insertAdjacentElement("afterend", span)
     span.textContent = spanText
     }
   }
@@ -111,6 +121,7 @@ form.addEventListener("submit", (event) => {
 const validate = () => {
   errorMessagesRemove()
   validateNames(firstName, lastName)
+
   if(!document.querySelectorAll("span.error").length)
     form.submit()
 }
