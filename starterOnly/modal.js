@@ -51,14 +51,19 @@ const insertErrorMessage = (element, text) => {
 
 // first and last name
 const validateNames = (...names) => {
+  const errorFlag = true
   for(let name of names) {
     if(name.value.length < 2) {
-    const label = name.labels[0]
-    const span = insertErrorMessage(name, "test!")
-    const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`
-    span.textContent = spanText
+      const label = name.labels[0]
+      const span = insertErrorMessage(name, "test!")
+      const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`
+      span.textContent = spanText
+
+      errorFlag = false
     }
   }
+
+  return errorFlag
 }
 
 // email address
