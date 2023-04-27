@@ -44,7 +44,7 @@ const validateNames = (...names) => {
     const label = name.labels[0]
     const span = document.createElement("span")
     span.className = "error"
-    const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} de plus de deux lettres`
+    const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`
     name.insertAdjacentElement("afterend", span)
     span.textContent = spanText
     }
@@ -95,7 +95,6 @@ const validateCity = () => {
 // Remove previous error messages
 const errorMessagesRemove = () => {
   spanError = document.querySelectorAll("span.error")
-  console.log(spanError)
   for(let span of spanError)
     span.remove()
 }
@@ -112,4 +111,6 @@ form.addEventListener("submit", (event) => {
 const validate = () => {
   errorMessagesRemove()
   validateNames(firstName, lastName)
+  if(!document.querySelectorAll("span.error").length)
+    form.submit()
 }
