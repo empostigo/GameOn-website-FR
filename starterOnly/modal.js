@@ -116,7 +116,23 @@ const validateCity = () => {
   radioCheckedList = document.querySelectorAll(".city-choice:checked")
   if(!radioCheckedList.length) {
     const lastRadioNode = document.querySelectorAll(".city-choice")
-    insertErrorMessage(lastRadioNode.item(lastRadioNode.length - 1), "Merci de sélectionner une ville pour participer à un tournoi")
+    const label = lastRadioNode.item(lastRadioNode.length - 1).labels[0]
+    insertErrorMessage(label, "Merci de sélectionner une ville pour participer à un tournoi")
+
+    errorFlag = false
+  }
+
+  return errorFlag
+}
+
+// Validate term of use
+const validateTerms = () => {
+  let errorFlag = true
+
+  const term = document.getElementById("checkbox1")
+  if(!term.checked) {
+    const label = term.labels[0]
+    insertErrorMessage(label, "Merci d'accepter les conditions d'utilisation")
 
     errorFlag = false
   }
@@ -150,6 +166,7 @@ const validate = () => {
   errorFlags.push(validateNames(firstName, lastName))
   errorFlags.push(validateNbContest(numberContests))
   errorFlags.push(validateCity())
+  errorFlags.push(validateTerms())
 
   const errorFlag = errorFlags.some(b => b === false)
 
