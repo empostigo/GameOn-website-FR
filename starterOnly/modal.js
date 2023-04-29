@@ -38,7 +38,7 @@ function closeModal() {
 // form field format validation functions
 
 // Insert span for error messages
-const insertErrorMessage = (element, text = "") => {
+const insertErrorMessage = (element, text) => {
     const span = document.createElement("span")
     span.className = "error"
     element.insertAdjacentElement("afterend", span)
@@ -59,12 +59,12 @@ const errorMessagesRemove = () => {
 // first and last name
 const validateNames = (...names) => {
   let errorFlag = true
+
   for(let name of names) {
     if(name.value.length < 2) {
       const label = name.labels[0]
-      const span = insertErrorMessage(name)
       const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`
-      span.textContent = spanText
+      const span = insertErrorMessage(name, spanText)
 
       errorFlag = false
     }
@@ -103,12 +103,32 @@ const validateNames = (...names) => {
 //}
 //
 
+// Birthdate:
+// Competitors must be at least 18 for now
+// And of course, Maria Branyas Morera,
+// born March 4, 1907 and the dean of the humanity is welcome :)
+const validateBirthDate = (date) => {
+  let errorFlag = true
+
+  const today = new Date().getFullYear()
+  const birthDate = new Date(date.value).getFullYear()
+
+  console.log(birthDate)
+
+  //console.log([today, birthDate].join(" "))
+
+
+  return errorFlag
+}
+
+
 // The number of contests must be a number...
 // So get the type of the information returned by the form
 // As GameOn seems to exist since 2014,
 // let's say that there has been 10 contests max
 const validateNbContest = (nb) => {
   let errorFlag = true
+
   const castNb = parseInt(nb.value)
   if(isNaN(castNb) || castNb < 0 || castNb > 10) {
     const errorMessage = "Merci de saisir un nombre positif, entre 0 et 10"
@@ -154,6 +174,7 @@ const validateTerms = () => {
 
 const firstName = document.getElementById("first")
 const lastName = document.getElementById("last")
+const birthDate = document.getElementById("birthdate")
 const numberContests = document.getElementById("quantity")
 
 // Prevent form submission before data validation
@@ -172,6 +193,7 @@ const validate = () => {
   errorFlags.push(validateNbContest(numberContests))
   errorFlags.push(validateCity())
   errorFlags.push(validateTerms())
+  errorFlags.push(validateBirthDate(birthDate))
 
   const errorFlag = errorFlags.some(b => b === false)
 
