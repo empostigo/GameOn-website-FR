@@ -105,11 +105,13 @@ const validateNames = (...names) => {
 
 // The number of contests must be a number...
 // So get the type of the information returned by the form
+// As GameOn seems to exist since 2014,
+// let's say that there has been 10 contests max
 const validateNbContest = (nb) => {
   let errorFlag = true
   const castNb = parseInt(nb.value)
-  if(isNaN(castNb) || castNb < 0) {
-    const errorMessage = "Merci de saisir un nombre positif ou zéro"
+  if(isNaN(castNb) || castNb < 0 || castNb > 10) {
+    const errorMessage = "Merci de saisir un nombre positif, entre 0 et 10"
     insertErrorMessage(nb, errorMessage)
     errorFlag = false
   }
