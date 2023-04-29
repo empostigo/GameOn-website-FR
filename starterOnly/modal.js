@@ -107,14 +107,42 @@ const validateNames = (...names) => {
 // Competitors must be at least 18 for now
 // And of course, Maria Branyas Morera,
 // born March 4, 1907 and the dean of the humanity is welcome :)
+
+// Determine if a year is leap year
+const isLeapYear = (year) => (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0)
+
+// Create a range to test years if they are leap year
+// from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from#sequence_generator_range
+const range = (start, stop, step = 1) =>
+  Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step)
+
 const validateBirthDate = (date) => {
   let errorFlag = true
 
-  const today = new Date().getFullYear()
-  const birthDate = new Date(date.value).getFullYear()
+  const minAge = 18
 
-  console.log(birthDate)
+  const today = new Date()
+  const birthDate = new Date(date.value)
+  const todayYear = today.getFullYear()
+  const birthYear = birthDate.getFullYear()
 
+  let nbLeapYear = 0
+  for(let y of range(todayYear, birthYear))
+    if(isLeapYear(y))
+      nbLeapYear++
+  
+  const age = 
+  /*
+  const maxBirthDate = new Date('1907-03-04')
+
+  const yearDiff = today.getFullYear() - birthDate.getFullYear()
+  if(yearDiff < minAge)
+    if(yearDiff > minAge - 1) {
+      if(today.getMonth() < birthDate.getMonth()) 
+    }
+*/
+
+  console.log((today - birthDate)/(31556926*1000))
   //console.log([today, birthDate].join(" "))
 
 
