@@ -110,6 +110,13 @@ const validateNames = (...names) => {
 const validateBirthDate = (date) => {
   let errorFlag = true
 
+  if(!date.value.length) {
+    insertErrorMessage(date, "Merci de renseigner une date de naissance")
+
+    return false
+  }
+
+
   const minAge = 18
   const today = new Date()
   const todayYear = today.getFullYear()
