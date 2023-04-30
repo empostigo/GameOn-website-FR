@@ -116,7 +116,6 @@ const validateBirthDate = (date) => {
     return false
   }
 
-
   const minAge = 18
   const today = new Date()
   const todayYear = today.getFullYear()
