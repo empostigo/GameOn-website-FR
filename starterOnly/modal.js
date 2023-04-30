@@ -107,44 +107,36 @@ const validateNames = (...names) => {
 // Competitors must be at least 18 for now
 // And of course, Maria Branyas Morera,
 // born March 4, 1907 and the dean of the humanity is welcome :)
-
-// Determine if a year is leap year
-const isLeapYear = (year) => (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0)
-
-// Create a range to test years if they are leap year
-// from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from#sequence_generator_range
-const range = (start, stop, step = 1) =>
-  Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step)
-
 const validateBirthDate = (date) => {
   let errorFlag = true
 
   const minAge = 18
-
   const today = new Date()
-  const birthDate = new Date(date.value)
   const todayYear = today.getFullYear()
+  const birthDate = new Date(date.value)
   const birthYear = birthDate.getFullYear()
 
-  let nbLeapYear = 0
-  for(let y of range(todayYear, birthYear))
-    if(isLeapYear(y))
-      nbLeapYear++
-  
-  const age = 
-  /*
-  const maxBirthDate = new Date('1907-03-04')
+  const age = todayYear - birthYear
+  if(age < minAge)
+    errorFlag = false
 
-  const yearDiff = today.getFullYear() - birthDate.getFullYear()
-  if(yearDiff < minAge)
-    if(yearDiff > minAge - 1) {
-      if(today.getMonth() < birthDate.getMonth()) 
+  if(age === minAge) {
+    const todayMonth = today.getMonth()
+    const birthMonth = birthDate.getMonth()
+    if(todayMonth < birthMonth)
+      errorFlag = false
+    
+    if(todayMonth === birthMonth) {
+      const todayDay = today.getDate()
+      const birthDay = birthDate.getDate()
+
+      if(todayDay < birthDay)
+        errorFlag = false
     }
-*/
+  }
 
-  console.log((today - birthDate)/(31556926*1000))
-  //console.log([today, birthDate].join(" "))
-
+  if(!errorFlag)
+    insertErrorMessage(date, "Vous devez être majeur pour participer à un tournoi GameOn")
 
   return errorFlag
 }
@@ -155,6 +147,7 @@ const validateBirthDate = (date) => {
 // As GameOn seems to exist since 2014,
 // let's say that there has been 10 contests max
 const validateNbContest = (nb) => {
+
   let errorFlag = true
 
   const castNb = parseInt(nb.value)
@@ -218,10 +211,10 @@ const validate = () => {
   errorMessagesRemove()
 
   errorFlags.push(validateNames(firstName, lastName))
+  errorFlags.push(validateBirthDate(birthDate))
   errorFlags.push(validateNbContest(numberContests))
   errorFlags.push(validateCity())
   errorFlags.push(validateTerms())
-  errorFlags.push(validateBirthDate(birthDate))
 
   const errorFlag = errorFlags.some(b => b === false)
 
