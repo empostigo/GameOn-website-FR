@@ -87,21 +87,59 @@ const validateNames = (...names) => {
 // As long as they don't lead or trail the string
 // No comment with ()
 // And of course the @ separator is mandatory
-// Lengths: local-part: {2,64} chars max, domain and subdomains: {1,63} chars max each
-// TLD length: {2,63}
-// See https://www.abstractapi.com/guides/email-address-pattern-validation for references
-//const validateEmail = (email) => {
-//  if (!email.includes("@")) {
-//    return false
-//  }
-//  
-//  // first part of an email, the local part
-//  const local = /fdfdf/
-//
-//  // second part, domain
-//  const doamin = //
-//}
-//
+// Lengths: local-part: {1,64} chars max, domain and subdomains: {1,63} chars max each
+// TLD length: {2,63}, and a total of 254 characters max
+// See https://datatracker.ietf.org/doc/html/rfc5321#section-4.5.3.1.1 for references
+// and also https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
+const validateEmail = (mail) => {
+
+  errorFlag = true
+
+  minEmailLength = 6
+  maxEmailLength = 254
+  
+  const email = mail.value
+  let errorMessage = ""
+  switch(true) {
+    case !email.includes("@"):
+      errorFlag = false
+      errorMessage = "Il semble que votre adresse de messagerie soit mal formée : il manque le caractère \"@\""
+      insertErrorMessage(mail, errorMessage)
+      break
+
+    case email.length < minEmailLength:
+      errorFlag = false
+      errorMessage = `Votre adresse de messagerie doit comporter au minimum ${minEmailLength} caractères`
+      insertErrorMessage(mail, errorMessage)
+      break
+
+    case email.length > maxEmailLength:
+      errorFlag = false
+      errorMessage = `Votre adresse de messagerie doit comporter au maximum ${maxEmailLength} caractères`
+      insertErrorMessage(mail, errorMessage)
+      break
+
+    default:
+      break
+  }
+
+  // first part of an email, the local part
+  const local = /^[\w!#$%&*+/=?^_`{|}~][\w!#$%&*+/=?^_`.{|}~-]{0,62}[\w!#$%&*+/=?^_`{|}~]/
+  // second part, domain
+  const domain = /(?:(?=[\w-]{1,63}\.)[\w]+(?:-[\w]+)*\.){1,8}[\w]{2,63}$/
+
+  // split email to check the parts
+  const parts = email.split('@')
+  // test if email matches the local-part and domain regexes
+  if(!local.test(parts[0]) || !domain.test(parts[1]) && errorMessage.length === 0) {
+    errorFlag = false
+
+    errorMessage = "Votre email ne semble pas valide, merci d'en renseigner un autre"
+    insertErrorMessage(mail, errorMessage)
+  }
+
+  return errorFlag
+}
 
 // Birthdate:
 // Competitors must be at least 18 for now
@@ -201,6 +239,7 @@ const validateTerms = () => {
 
 const firstName = document.getElementById("first")
 const lastName = document.getElementById("last")
+const email = document.getElementById("email")
 const birthDate = document.getElementById("birthdate")
 const numberContests = document.getElementById("quantity")
 
@@ -217,6 +256,7 @@ const validate = () => {
   errorMessagesRemove()
 
   errorFlags.push(validateNames(firstName, lastName))
+  errorFlags.push(validateEmail(email))
   errorFlags.push(validateBirthDate(birthDate))
   errorFlags.push(validateNbContest(numberContests))
   errorFlags.push(validateCity())
