@@ -532,11 +532,13 @@ footer {
 /* Styling error messages and invalid input */
 input.invalid {
   border: 2px solid #FF4E60;
+  margin-bottom: 8px;
 }
 
 span.error {
   display: block;
   font-family: 'Roboto';
   font-size: 12px;
+  line-height: 1.4;
   color: #FF4E60;
 }
