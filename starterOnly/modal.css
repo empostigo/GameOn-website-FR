@@ -529,7 +529,14 @@ footer {
   }
 }
 
-span.error {
-  font-size: 12px;
+/* Styling error messages and invalid input */
+input.invalid {
+  border: 2px solid #FF4E60;
+}
 
+span.error {
+  display: block;
+  font-family: 'Roboto';
+  font-size: 12px;
+  color: #FF4E60;
 }

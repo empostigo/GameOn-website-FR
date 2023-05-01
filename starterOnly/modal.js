@@ -42,6 +42,7 @@ const insertErrorMessage = (element, text) => {
     const span = document.createElement("span")
     span.className = "error"
     element.insertAdjacentElement("afterend", span)
+    element.classList.add("invalid")
 
     if(text.length > 0)
       span.textContent = text
@@ -54,6 +55,10 @@ const errorMessagesRemove = () => {
   spanError = document.querySelectorAll("span.error")
   for(let span of spanError)
     span.remove()
+
+  invalidElement = document.querySelectorAll(".invalid")
+  for(let invalid of invalidElement)
+    invalid.classList.remove("invalid")
 }
 
 // first and last name
@@ -101,6 +106,12 @@ const validateEmail = (mail) => {
   const email = mail.value
   let errorMessage = ""
   switch(true) {
+    case email.length === 0:
+      errorFlag = false
+      errorMessage = "Merci de renseigner une adresse de messagerie"
+      insertErrorMessage(mail, errorMessage)
+      break
+
     case !email.includes("@"):
       errorFlag = false
       errorMessage = "Il semble que votre adresse de messagerie soit mal formée : il manque le caractère \"@\""
@@ -131,7 +142,7 @@ const validateEmail = (mail) => {
   // split email to check the parts
   const parts = email.split('@')
   // test if email matches the local-part and domain regexes
-  if(!local.test(parts[0]) || !domain.test(parts[1]) && errorMessage.length === 0) {
+  if((!local.test(parts[0]) || !domain.test(parts[1])) && errorMessage.length === 0) {
     errorFlag = false
 
     errorMessage = "Votre email ne semble pas valide, merci d'en renseigner un autre"
