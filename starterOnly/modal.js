@@ -67,6 +67,8 @@ const validateNames = (...names) => {
     }
   }
 
+  if (errorFlag) errorMessagesRemove();
+
   return errorFlag;
 };
 
@@ -280,8 +282,5 @@ const validate = () => {
 
   const errorFlag = errorFlags.some((b) => b === false);
 
-  if (!errorFlag) {
-    errorMessagesRemove();
-    form.submit();
-  }
+  if (!errorFlag) form.submit();
 };
