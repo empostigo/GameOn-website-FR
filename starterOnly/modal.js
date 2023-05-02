@@ -156,6 +156,8 @@ const validateEmail = (mail) => {
 // Competitors must be at least 18 for now
 // And of course, Maria Branyas Morera,
 // born March 4, 1907 and the dean of the humanity is welcome :)
+// But let's give someone a chance to overtake Jeanne Calment(122 years, 164 days)
+// and reach the canonical age of 123
 const validateBirthDate = (date) => {
   let errorFlag = true
 
@@ -166,12 +168,21 @@ const validateBirthDate = (date) => {
   }
 
   const minAge = 18
+  const maxAge = 123
   const today = new Date()
   const todayYear = today.getFullYear()
   const birthDate = new Date(date.value)
   const birthYear = birthDate.getFullYear()
 
   const age = todayYear - birthYear
+
+  if(age > maxAge) {
+    errorMessage = "Il semble que vous ayez commis une erreur dans votre date de naissance, merci de la vérifier"
+    insertErrorMessage(date, errorMessage)
+
+    return false
+  }
+
   if(age < minAge)
     errorFlag = false
 
