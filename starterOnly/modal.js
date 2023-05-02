@@ -46,10 +46,10 @@ const insertErrorMessage = (element, text) => {
 
 // Remove previous error messages
 const errorMessagesRemove = () => {
-  formData = document.querySelectorAll(".formData");
+  const formData = document.querySelectorAll(".formData");
   for (let div of formData) {
     div.setAttribute("data-error", "");
-    div.setAttribute("data-error-false", "false");
+    div.setAttribute("data-error-visible", "false");
   }
 };
 
@@ -66,8 +66,6 @@ const validateNames = (...names) => {
       errorFlag = false;
     }
   }
-
-  if (errorFlag) errorMessagesRemove();
 
   return errorFlag;
 };
@@ -271,6 +269,8 @@ form.addEventListener("submit", (event) => {
 });
 
 const validate = () => {
+  errorMessagesRemove();
+
   let errorFlags = [];
 
   errorFlags.push(validateNames(firstName, lastName));
