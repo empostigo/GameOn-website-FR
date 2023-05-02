@@ -24,14 +24,14 @@ function launchModal() {
 // Modal window closing implementation
 
 // Get the close button element
-const closeBtn = document.querySelector(".close")
+const closeBtn = document.querySelector(".close");
 
 // Wait for close event
-closeBtn.addEventListener("click", closeModal)
+closeBtn.addEventListener("click", closeModal);
 
 // close modal form
 function closeModal() {
-  modalbg.style.display = "none"    // Set display to none
+  modalbg.style.display = "none"; // Set display to none
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,44 +39,36 @@ function closeModal() {
 
 // Insert span for error messages
 const insertErrorMessage = (element, text) => {
-    const span = document.createElement("span")
-    span.className = "error"
-    element.insertAdjacentElement("afterend", span)
-    element.classList.add("invalid")
-
-    if(text.length > 0)
-      span.textContent = text
-
-    return span
-}
+  const parent = element.parentElement;
+  parent.setAttribute("data-error", text);
+  parent.setAttribute("data-error-visible", "true");
+};
 
 // Remove previous error messages
 const errorMessagesRemove = () => {
-  spanError = document.querySelectorAll("span.error")
-  for(let span of spanError)
-    span.remove()
-
-  invalidElement = document.querySelectorAll(".invalid")
-  for(let invalid of invalidElement)
-    invalid.classList.remove("invalid")
-}
+  formData = document.querySelectorAll(".formData");
+  for (let div of formData) {
+    div.setAttribute("data-error", "");
+    div.setAttribute("data-error-false", "false");
+  }
+};
 
 // first and last name
 const validateNames = (...names) => {
-  let errorFlag = true
+  let errorFlag = true;
 
-  for(let name of names) {
-    if(name.value.length < 2) {
-      const label = name.labels[0]
-      const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`
-      const span = insertErrorMessage(name, spanText)
+  for (let name of names) {
+    if (name.value.length < 2) {
+      const label = name.labels[0];
+      const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`;
+      const span = insertErrorMessage(name, spanText);
 
-      errorFlag = false
+      errorFlag = false;
     }
   }
 
-  return errorFlag
-}
+  return errorFlag;
+};
 
 // email address
 // We don't use html validation feature, as email addresses are somewhat complex
@@ -97,60 +89,65 @@ const validateNames = (...names) => {
 // See https://datatracker.ietf.org/doc/html/rfc5321#section-4.5.3.1.1 for references
 // and also https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
 const validateEmail = (mail) => {
+  errorFlag = true;
 
-  errorFlag = true
+  minEmailLength = 6;
+  maxEmailLength = 254;
 
-  minEmailLength = 6
-  maxEmailLength = 254
-  
-  const email = mail.value
-  let errorMessage = ""
-  switch(true) {
+  const email = mail.value;
+  let errorMessage = "";
+  switch (true) {
     case email.length === 0:
-      errorFlag = false
-      errorMessage = "Merci de renseigner une adresse de messagerie"
-      insertErrorMessage(mail, errorMessage)
-      break
+      errorFlag = false;
+      errorMessage = "Merci de renseigner une adresse de messagerie";
+      insertErrorMessage(mail, errorMessage);
+      break;
 
     case !email.includes("@"):
-      errorFlag = false
-      errorMessage = "Il semble que votre adresse de messagerie soit mal formée : il manque le caractère \"@\""
-      insertErrorMessage(mail, errorMessage)
-      break
+      errorFlag = false;
+      errorMessage =
+        'Il semble que votre adresse de messagerie soit mal formée : il manque le caractère "@"';
+      insertErrorMessage(mail, errorMessage);
+      break;
 
     case email.length < minEmailLength:
-      errorFlag = false
-      errorMessage = `Votre adresse de messagerie doit comporter au minimum ${minEmailLength} caractères`
-      insertErrorMessage(mail, errorMessage)
-      break
+      errorFlag = false;
+      errorMessage = `Votre adresse de messagerie doit comporter au minimum ${minEmailLength} caractères`;
+      insertErrorMessage(mail, errorMessage);
+      break;
 
     case email.length > maxEmailLength:
-      errorFlag = false
-      errorMessage = `Votre adresse de messagerie doit comporter au maximum ${maxEmailLength} caractères`
-      insertErrorMessage(mail, errorMessage)
-      break
+      errorFlag = false;
+      errorMessage = `Votre adresse de messagerie doit comporter au maximum ${maxEmailLength} caractères`;
+      insertErrorMessage(mail, errorMessage);
+      break;
 
     default:
-      break
+      break;
   }
 
   // first part of an email, the local part
-  const local = /^[\w!#$%&*+/=?^_`{|}~][\w!#$%&*+/=?^_`.{|}~-]{0,62}[\w!#$%&*+/=?^_`{|}~]/
+  const local =
+    /^[\w!#$%&*+/=?^_`{|}~][\w!#$%&*+/=?^_`.{|}~-]{0,62}[\w!#$%&*+/=?^_`{|}~]/;
   // second part, domain
-  const domain = /(?:(?=[\w-]{1,63}\.)[\w]+(?:-[\w]+)*\.){1,8}[\w]{2,63}$/
+  const domain = /(?:(?=[\w-]{1,63}\.)[\w]+(?:-[\w]+)*\.){1,8}[\w]{2,63}$/;
 
   // split email to check the parts
-  const parts = email.split('@')
+  const parts = email.split("@");
   // test if email matches the local-part and domain regexes
-  if((!local.test(parts[0]) || !domain.test(parts[1])) && errorMessage.length === 0) {
-    errorFlag = false
+  if (
+    (!local.test(parts[0]) || !domain.test(parts[1])) &&
+    errorMessage.length === 0
+  ) {
+    errorFlag = false;
 
-    errorMessage = "Votre email ne semble pas valide, merci d'en renseigner un autre"
-    insertErrorMessage(mail, errorMessage)
+    errorMessage =
+      "Votre email ne semble pas valide, merci d'en renseigner un autre";
+    insertErrorMessage(mail, errorMessage);
   }
 
-  return errorFlag
-}
+  return errorFlag;
+};
 
 // Birthdate:
 // Competitors must be at least 18 for now
@@ -159,133 +156,132 @@ const validateEmail = (mail) => {
 // But let's give someone a chance to overtake Jeanne Calment(122 years, 164 days)
 // and reach the canonical age of 123
 const validateBirthDate = (date) => {
-  let errorFlag = true
+  let errorFlag = true;
 
-  if(!date.value.length) {
-    insertErrorMessage(date, "Merci de renseigner une date de naissance")
+  if (!date.value.length) {
+    insertErrorMessage(date, "Merci de renseigner une date de naissance");
 
-    return false
+    return false;
   }
 
-  const minAge = 18
-  const maxAge = 123
-  const today = new Date()
-  const todayYear = today.getFullYear()
-  const birthDate = new Date(date.value)
-  const birthYear = birthDate.getFullYear()
+  const minAge = 18;
+  const maxAge = 123;
+  const today = new Date();
+  const todayYear = today.getFullYear();
+  const birthDate = new Date(date.value);
+  const birthYear = birthDate.getFullYear();
 
-  const age = todayYear - birthYear
+  const age = todayYear - birthYear;
 
-  if(age > maxAge) {
-    errorMessage = "Il semble que vous ayez commis une erreur dans votre date de naissance, merci de la vérifier"
-    insertErrorMessage(date, errorMessage)
+  if (age > maxAge) {
+    errorMessage =
+      "Il semble que vous ayez commis une erreur dans votre date de naissance, merci de la vérifier";
+    insertErrorMessage(date, errorMessage);
 
-    return false
+    return false;
   }
 
-  if(age < minAge)
-    errorFlag = false
+  if (age < minAge) errorFlag = false;
 
-  if(age === minAge) {
-    const todayMonth = today.getMonth()
-    const birthMonth = birthDate.getMonth()
-    if(todayMonth < birthMonth)
-      errorFlag = false
-    
-    if(todayMonth === birthMonth) {
-      const todayDay = today.getDate()
-      const birthDay = birthDate.getDate()
+  if (age === minAge) {
+    const todayMonth = today.getMonth();
+    const birthMonth = birthDate.getMonth();
+    if (todayMonth < birthMonth) errorFlag = false;
 
-      if(todayDay < birthDay)
-        errorFlag = false
+    if (todayMonth === birthMonth) {
+      const todayDay = today.getDate();
+      const birthDay = birthDate.getDate();
+
+      if (todayDay < birthDay) errorFlag = false;
     }
   }
 
-  if(!errorFlag)
-    insertErrorMessage(date, "Vous devez être majeur pour participer à un tournoi GameOn")
+  if (!errorFlag)
+    insertErrorMessage(
+      date,
+      "Vous devez être majeur pour participer à un tournoi GameOn"
+    );
 
-  return errorFlag
-}
-
+  return errorFlag;
+};
 
 // The number of contests must be a number...
 // So get the type of the information returned by the form
 // As GameOn seems to exist since 2014,
 // let's say that there has been 10 contests max
 const validateNbContest = (nb) => {
+  let errorFlag = true;
 
-  let errorFlag = true
-
-  const castNb = parseInt(nb.value)
-  if(isNaN(castNb) || castNb < 0 || castNb > 10) {
-    const errorMessage = "Merci de saisir un nombre positif, entre 0 et 10"
-    insertErrorMessage(nb, errorMessage)
-    errorFlag = false
+  const castNb = parseInt(nb.value);
+  if (isNaN(castNb) || castNb < 0 || castNb > 10) {
+    const errorMessage = "Merci de saisir un nombre positif, entre 0 et 10";
+    insertErrorMessage(nb, errorMessage);
+    errorFlag = false;
   }
 
-  return errorFlag
-}
+  return errorFlag;
+};
 
 // Is there a radio button checked for the city ?
 const validateCity = () => {
-  let errorFlag = true
+  let errorFlag = true;
 
-  radioCheckedList = document.querySelectorAll(".city-choice:checked")
-  if(!radioCheckedList.length) {
-    const lastRadioNode = document.querySelectorAll(".city-choice")
-    const label = lastRadioNode.item(lastRadioNode.length - 1).labels[0]
-    const errorMessage = "Merci de sélectionner une ville pour participer à un tournoi"
-    insertErrorMessage(label, errorMessage)
+  radioCheckedList = document.querySelectorAll(".city-choice:checked");
+  if (!radioCheckedList.length) {
+    const lastRadioNode = document.querySelectorAll(".city-choice");
+    const label = lastRadioNode.item(lastRadioNode.length - 1).labels[0];
+    const errorMessage =
+      "Merci de sélectionner une ville pour participer à un tournoi";
+    insertErrorMessage(label, errorMessage);
 
-    errorFlag = false
+    errorFlag = false;
   }
 
-  return errorFlag
-}
+  return errorFlag;
+};
 
 // Validate term of use
 const validateTerms = () => {
-  let errorFlag = true
+  let errorFlag = true;
 
-  const term = document.getElementById("checkbox1")
-  if(!term.checked) {
-    const label = term.labels[0]
-    const errorMessage = "Merci d'accepter les conditions d'utilisation"
-    insertErrorMessage(label, errorMessage)
+  const term = document.getElementById("checkbox1");
+  if (!term.checked) {
+    const label = term.labels[0];
+    const errorMessage = "Merci d'accepter les conditions d'utilisation";
+    insertErrorMessage(label, errorMessage);
 
-    errorFlag = false
+    errorFlag = false;
   }
 
-  return errorFlag
-}
+  return errorFlag;
+};
 
-const firstName = document.getElementById("first")
-const lastName = document.getElementById("last")
-const email = document.getElementById("email")
-const birthDate = document.getElementById("birthdate")
-const numberContests = document.getElementById("quantity")
+const firstName = document.getElementById("first");
+const lastName = document.getElementById("last");
+const email = document.getElementById("email");
+const birthDate = document.getElementById("birthdate");
+const numberContests = document.getElementById("quantity");
 
 // Prevent form submission before data validation
-const form = document.getElementById("form")
+const form = document.getElementById("form");
 form.addEventListener("submit", (event) => {
-  event.preventDefault()
-})
+  event.preventDefault();
+});
 
 const validate = () => {
+  let errorFlags = [];
 
-  let errorFlags = []
+  errorFlags.push(validateNames(firstName, lastName));
+  errorFlags.push(validateEmail(email));
+  errorFlags.push(validateBirthDate(birthDate));
+  errorFlags.push(validateNbContest(numberContests));
+  errorFlags.push(validateCity());
+  errorFlags.push(validateTerms());
 
-  errorMessagesRemove()
+  const errorFlag = errorFlags.some((b) => b === false);
 
-  errorFlags.push(validateNames(firstName, lastName))
-  errorFlags.push(validateEmail(email))
-  errorFlags.push(validateBirthDate(birthDate))
-  errorFlags.push(validateNbContest(numberContests))
-  errorFlags.push(validateCity())
-  errorFlags.push(validateTerms())
-
-  const errorFlag = errorFlags.some(b => b === false)
-
-  if(!errorFlag)
-    form.submit()
-}
+  if (!errorFlag) {
+    errorMessagesRemove();
+    form.submit();
+  }
+};
