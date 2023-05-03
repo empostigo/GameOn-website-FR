@@ -28,6 +28,9 @@ const closeBtn = document.querySelector(".close");
 
 // Wait for close event
 closeBtn.addEventListener("click", closeModal);
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeModal();
+});
 
 // close modal form
 function closeModal() {
