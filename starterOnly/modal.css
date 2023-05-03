@@ -11,7 +11,6 @@
   padding: 0;
 }
 /* Landing Page */
-
 body {
   margin: 0;
   display: flex;
@@ -530,19 +529,3 @@ footer {
     opacity: 1;
   }
 }
-
-/* Styling error messages and invalid input */
-/*
-input.invalid {
-  border: 2px solid #FF4E60;
-  margin-bottom: 8px;
-}
-
-span.error {
-  display: block;
-  font-family: 'Roboto';
-  font-size: 12px;
-  line-height: 1.4;
-  color: #FF4E60;
-}
-*/
