@@ -23,19 +23,20 @@ function launchModal() {
 ///////////////////////////////////////////////////////////////////////////////
 // Modal window closing implementation
 
-// Get the close button element
-const closeBtn = document.querySelector(".close");
-
-// Wait for close event
-closeBtn.addEventListener("click", closeModal);
-window.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeModal();
-});
-
 // close modal form
 function closeModal() {
   modalbg.style.display = "none"; // Set display to none
 }
+
+// Get the close button element
+const closeBtn = document.querySelector(".close");
+
+// Wait for close event on close cross click
+closeBtn.addEventListener("click", closeModal);
+// And on escape key press
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeModal();
+});
 
 ///////////////////////////////////////////////////////////////////////////////
 // form field format validation functions
