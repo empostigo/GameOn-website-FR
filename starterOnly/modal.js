@@ -7,16 +7,6 @@ function editNav() {
   }
 }
 
-const setResponsive = () => {
-  const width = window.innerWidth;
-  const nav = document.getElementById("myTopnav");
-  if (width < 768) nav.className = "topnav";
-
-  editNav();
-};
-
-//window.addEventListener("resize", setResponsive());
-
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
