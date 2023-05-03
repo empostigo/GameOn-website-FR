@@ -64,8 +64,8 @@ const validateNames = (...names) => {
   for (let name of names) {
     if (name.value.length < 2) {
       const label = name.labels[0];
-      const spanText = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`;
-      const span = insertErrorMessage(name, spanText);
+      const text = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`;
+      insertErrorMessage(name, text);
 
       errorFlag = false;
     }
