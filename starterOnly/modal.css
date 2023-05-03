@@ -109,6 +109,7 @@ img {
   /* Set logo height to align with menu icon */
   .header-logo img {
     height: 20px;
+  }
 }
 
 main {
