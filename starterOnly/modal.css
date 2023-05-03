@@ -76,6 +76,7 @@ img {
   .topnav a.icon {
     float: right;
     display: block;
+    color: #ff0018;
   }
 }
 
@@ -104,6 +105,10 @@ img {
     display: block;
     margin-top: -15px;
   }
+
+  /* Set logo height to align with menu icon */
+  .header-logo img {
+    height: 20px;
 }
 
 main {

@@ -7,6 +7,16 @@ function editNav() {
   }
 }
 
+const setResponsive = () => {
+  const width = window.innerWidth;
+  const nav = document.getElementById("myTopnav");
+  if (width < 768) nav.className = "topnav";
+
+  editNav();
+};
+
+//window.addEventListener("resize", setResponsive());
+
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
@@ -50,7 +60,6 @@ const insertErrorMessage = (element, text) => {
 
 // Remove previous error messages
 const errorMessagesRemove = () => {
-  const formData = document.querySelectorAll(".formData");
   for (let div of formData) {
     div.setAttribute("data-error", "");
     div.setAttribute("data-error-visible", "false");
