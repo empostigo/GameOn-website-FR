@@ -268,6 +268,18 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
 });
 
+const submitForm = () => {
+  form.style.opacity = 0;
+  document.querySelector(".btn-submit").style.display = "none";
+
+  const closeBtn = document.querySelector(".thanks");
+  closeBtn.style.display = "block";
+
+  const submit = document.querySelector(".btn-close");
+  submit.style.display = "block";
+  submit.addEventListener("click", (event) => form.submit());
+};
+
 const validate = () => {
   errorMessagesRemove();
 
@@ -282,5 +294,5 @@ const validate = () => {
 
   const errorFlag = errorFlags.some((b) => b === false);
 
-  if (!errorFlag) form.submit();
+  if (!errorFlag) submitForm();
 };

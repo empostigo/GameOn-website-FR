@@ -150,6 +150,7 @@ main {
 }
 
 .modal-body {
+  position: relative;
   padding: 15px 8%;
   margin: 15px auto;
 }
@@ -287,8 +288,19 @@ input[data-error]::after {
 .close:after {
   transform: rotate(-45deg);
 }
+
+.thanks {
+  display: none;
+  position: absolute;
+  top: 44%;
+  left: 21%;
+  font-size: 1.54rem;
+  text-align: center;
+  width: 296px;
+}
 .btn-submit,
-.btn-signup {
+.btn-signup,
+.btn-close {
   background: #fe142f;
   display: block;
   margin: 0 auto;
@@ -298,6 +310,10 @@ input[data-error]::after {
   color: #fff;
   cursor: pointer;
   border: 0;
+}
+
+.btn-close {
+  display: none;
 }
 /* custom select styles */
 .custom-select {
