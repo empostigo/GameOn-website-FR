@@ -103,26 +103,22 @@ const validateEmail = (mail) => {
     case email.length === 0:
       errorFlag = false;
       errorMessage = "Merci de renseigner une adresse de messagerie";
-      insertErrorMessage(mail, errorMessage);
       break;
 
     case !email.includes("@"):
       errorFlag = false;
       errorMessage =
         'Il semble que votre adresse de messagerie soit mal formée : il manque le caractère "@"';
-      insertErrorMessage(mail, errorMessage);
       break;
 
     case email.length < minEmailLength:
       errorFlag = false;
       errorMessage = `Votre adresse de messagerie doit comporter au minimum ${minEmailLength} caractères`;
-      insertErrorMessage(mail, errorMessage);
       break;
 
     case email.length > maxEmailLength:
       errorFlag = false;
       errorMessage = `Votre adresse de messagerie doit comporter au maximum ${maxEmailLength} caractères`;
-      insertErrorMessage(mail, errorMessage);
       break;
 
     default:
@@ -146,8 +142,9 @@ const validateEmail = (mail) => {
 
     errorMessage =
       "Votre email ne semble pas valide, merci d'en renseigner un autre";
-    insertErrorMessage(mail, errorMessage);
   }
+
+  if (errorMessage.length) insertErrorMessage(mail, errorMessage);
 
   return errorFlag;
 };
