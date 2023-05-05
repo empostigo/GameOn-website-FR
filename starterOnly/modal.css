@@ -291,12 +291,9 @@ input[data-error]::after {
 
 .thanks {
   display: none;
-  position: absolute;
-  top: 44%;
-  left: 21%;
   font-size: 1.54rem;
   text-align: center;
-  width: 296px;
+  margin: 50% 0;
 }
 .btn-submit,
 .btn-signup,
@@ -579,6 +576,7 @@ footer {
 
   .content {
     top: 2%;
+    height: 100vh;
   }
 }
 
