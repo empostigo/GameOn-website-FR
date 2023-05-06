@@ -25,15 +25,15 @@ function launchModal() {
 
 // close modal form
 function closeModal() {
-  modalbg.style.display = "none"; // Set display to none
+  modalbg.style.display = "none"; // Set display to none to close modal
 }
 
-// Get the close button element
+// Get the close button element with its class "close"
 const closeBtn = document.querySelector(".close");
 
-// Wait for close event on close cross click
+// Wait for close event when clicking on the closing cross
 closeBtn.addEventListener("click", closeModal);
-// And on escape key press
+// And when pressing the "Escape" key
 window.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeModal();
 });
@@ -41,15 +41,24 @@ window.addEventListener("keydown", (event) => {
 ///////////////////////////////////////////////////////////////////////////////
 // form field format validation functions
 
-// Insert span for error messages
+// Insert error messages
+// All the input fields and radio/check buttons
+// have a div.formData parent which is styled
+// in modal.css
+// params: element with error, and error text to display
 const insertErrorMessage = (element, text) => {
+  // Get the element parent, which is a div.formData
   const parent = element.parentElement;
+  // set data-error value with error message
   parent.setAttribute("data-error", text);
+  // and data-error-visible to true, which sets opacity to 1 (in ::after pseudo element)
   parent.setAttribute("data-error-visible", "true");
 };
 
 // Remove previous error messages
 const errorMessagesRemove = () => {
+  // run through all formData div to remove error messages
+  // and set data-error-visible to false (in fact, we can set it to anything but true)
   for (let div of formData) {
     div.setAttribute("data-error", "");
     div.setAttribute("data-error-visible", "false");
@@ -74,7 +83,6 @@ const validateNames = (...names) => {
 };
 
 // email address
-// We don't use html validation feature, as email addresses are somewhat complex
 // We allow only a subset of what RFC5322 defines
 // To avoid server overload and possible hacking with fabulous regex:
 // Wordly characters: letters of English alphabet, digits or underscores
@@ -87,8 +95,9 @@ const validateNames = (...names) => {
 // As long as they don't lead or trail the string
 // No comment with ()
 // And of course the @ separator is mandatory
-// Lengths: local-part: {1,64} chars max, domain and subdomains: {1,63} chars max each
-// TLD length: {2,63}, and a total of 254 characters max
+// Lengths: local-part: {2,64} chars max, domain and subdomains: {1,63} chars max each
+// TLD length: {2,63}
+// Total length of the email of 254 characters max
 // See https://datatracker.ietf.org/doc/html/rfc5321#section-4.5.3.1.1 for references
 // and also https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
 const validateEmail = (mail) => {
@@ -100,7 +109,7 @@ const validateEmail = (mail) => {
   const email = mail.value;
   let errorMessage = "";
   switch (true) {
-    case email.length === 0:
+    case email.length === 0: // No email is provided
       errorFlag = false;
       errorMessage = "Merci de renseigner une adresse de messagerie";
       break;
