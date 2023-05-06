@@ -54,35 +54,48 @@
       <div class="content">
         <span class="close"></span>
         <div class="modal-body">
+          <!-- Add confirmation message -->
           <p class="thanks">Merci pour<br>votre inscription</p>
           <!-- Add novalidate and id to form, will use javascript -->
           <form id="form" name="reserve" action="index.html" method="get" onsubmit="return validate();" novalidate>
+            <!-- Add data-error and data-error-visible to .formData
+                 to display and style error messages -->
             <div class="formData" data-error="" data-error-visible="false">
               <!-- Add "for" attribute to the label, equal to the "id" attribute of input -->
               <label for="first">Prénom</label><br>
               <input class="text-control" type="text" id="first" name="first" />
             </div>
+            <!-- Add data-error and data-error-visible to .formData
+                 to display and style error messages -->
             <div class="formData" data-error="" data-error-visible="false">
               <!-- Add "for" attribute to the label, equal to the "id" attribute of input -->
               <label for="last">Nom</label><br>
               <input class="text-control" type="text" id="last" name="last" />
             </div>
+            <!-- Add data-error and data-error-visible to .formData
+                 to display and style error messages -->
             <div class="formData" data-error="" data-error-visible="false">
               <!-- Add "for" attribute to the label, equal to the "id" attribute of input -->
               <label for="email">E-mail</label><br>
               <input class="text-control" type="email" id="email" name="email" />
             </div>
+            <!-- Add data-error and data-error-visible to .formData
+                 to display and style error messages -->
             <div class="formData" data-error="" data-error-visible="false">
               <!-- Add "for" attribute to the label, equal to the "id" attribute of input -->
               <label for="birthdate">Date de naissance</label><br>
               <input class="text-control" type="date" id="birthdate" name="birthdate" />
             </div>
+            <!-- Add data-error and data-error-visible to .formData
+                 to display and style error messages -->
             <div class="formData" data-error="" data-error-visible="false">
               <!-- Add "for" attribute to the label, equal to the "id" attribute of input -->
               <label for="quantity">À combien de tournois GameOn avez-vous déjà participé ?</label><br>
               <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99">
             </div>
             <p class="text-label">A quel tournoi souhaitez-vous participer cette année ?</p>
+            <!-- Add data-error and data-error-visible to .formData
+                 to display and style error messages -->
             <div class="formData" data-error="" data-error-visible="false">
               <!-- Add city-choice class to be sure we only select cities radio buttons (for possible futur additions)-->
               <input class="checkbox-input city-choice" type="radio" id="location1" name="location" value="New York" />
@@ -117,6 +130,8 @@
                 Portland</label>
             </div>
 
+            <!-- Add data-error and data-error-visible to .formData
+                 to display and style error messages -->
             <div class="formData" data-error="" data-error-visible="false">
               <input class="checkbox-input" type="checkbox" id="checkbox1" checked />
               <label class="checkbox2-label" for="checkbox1" required>
@@ -132,6 +147,7 @@
             </div>
             <input class="btn-submit" type="submit" class="button" value="C'est parti" />
           </form>
+          <!-- Add close button to close modal window confirmation -->
           <button class="btn-close modal-btn">Fermer</button>
         </div>
       </div>
