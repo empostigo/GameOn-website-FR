@@ -97,7 +97,8 @@ const validateNames = (...names) => {
 // And of course the @ separator is mandatory
 // Lengths: local-part: {2,64} chars max, domain and subdomains: {1,63} chars max each
 // TLD length: {2,63}
-// Total length of the email of 254 characters max
+// Total length of the email of 7 characters min: local-part, 2, the "@", x.xx min for the domain
+// 254 characters max
 // See https://datatracker.ietf.org/doc/html/rfc5321#section-4.5.3.1.1 for references
 // and also https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
 const validateEmail = (mail) => {
@@ -114,12 +115,13 @@ const validateEmail = (mail) => {
       errorMessage = "Merci de renseigner une adresse de messagerie";
       break;
 
-    case !email.includes("@"):
+    case !email.includes("@"): // If the string doesn't conatin "@", it's not an email
       errorFlag = false;
       errorMessage =
         'Il semble que votre adresse de messagerie soit mal formée : il manque le caractère "@"';
       break;
 
+    // Check for minLength < email.length < maxLength
     case email.length < minEmailLength:
       errorFlag = false;
       errorMessage = `Votre adresse de messagerie doit comporter au minimum ${minEmailLength} caractères`;
@@ -130,6 +132,7 @@ const validateEmail = (mail) => {
       errorMessage = `Votre adresse de messagerie doit comporter au maximum ${maxEmailLength} caractères`;
       break;
 
+    // If all is okay, we can move on
     default:
       break;
   }
