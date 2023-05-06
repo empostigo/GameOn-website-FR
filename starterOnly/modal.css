@@ -531,10 +531,6 @@ footer {
     display: block;
     text-align: left;
   }
-
-  .content {
-    top: 4%;
-  }
 }
 
 @media screen and (max-width: 540px) {
@@ -572,11 +568,6 @@ footer {
     font-size: 0.6em;
     max-width: 344px;
     margin-left: -20px;
-  }
-
-  .content {
-    top: 2%;
-    height: 100vh;
   }
 }
 
