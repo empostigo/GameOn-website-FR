@@ -74,12 +74,13 @@ const validateNames = (...values) => {
   // this function use a variable number of arguments, the ...values argument is an array
   let errorFlag = true;
 
-  let errorMessage = "";
   for (let value of values) {
+    let errorMessage = "";
     const name = value.value;
     if (name.includes(" ")) {
-      const label = value.labels[0];
-      errorMessage = `Les espaces ne sont pas acceptés dans les ${label.textContent.toLowerCase()}`;
+      // Spaces are not accepted in names
+      const label = value.labels[0]; // the labels array contains labels associated with the input
+      errorMessage = `Les espaces ne sont pas acceptés dans les ${label.textContent.toLowerCase()}s`;
     }
 
     if (name.trim().length < 2) {
