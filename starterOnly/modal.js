@@ -21,6 +21,10 @@ function launchModal() {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
 // Modal window closing implementation
 
 // close modal form
@@ -66,15 +70,25 @@ const errorMessagesRemove = () => {
 };
 
 // first and last name
-const validateNames = (...names) => {
+const validateNames = (...values) => {
+  // this function use a variable number of arguments, the ...values argument is an array
   let errorFlag = true;
 
-  for (let name of names) {
-    if (name.value.trim().length < 2) {
-      const label = name.labels[0];
-      const text = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`;
-      insertErrorMessage(name, text);
+  let errorMessage = "";
+  for (let value of values) {
+    const name = value.value;
+    if (name.includes(" ")) {
+      const label = value.labels[0];
+      errorMessage = `Les espaces ne sont pas acceptés dans les ${label.textContent.toLowerCase()}`;
+    }
 
+    if (name.trim().length < 2) {
+      const label = value.labels[0];
+      errorMessage = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`;
+    }
+
+    if (errorMessage.length) {
+      insertErrorMessage(value, errorMessage);
       errorFlag = false;
     }
   }
@@ -86,21 +100,23 @@ const validateNames = (...names) => {
 // We allow only a subset of what RFC5322 defines
 // To avoid server overload and possible hacking with fabulous regex:
 // Wordly characters: letters of English alphabet, digits or underscores
+// The email have to start with a letter, upper or lower case
 // Doesn't allow unicode characters
 // No whitespace
 // No single/double quotes, alphanumeric only hostname with TLD (.*),
 // But no IP address literals i.e [192.168.0.1]
 // Periods(not consecutive) in local-part and domain are allowed
-// As well as dashes (-) inside the domain
+// As well as dashes (-) inside the domain (and local-part, but not beside dot)
 // As long as they don't lead or trail the string
 // No comment with ()
 // And of course the @ separator is mandatory
 // Lengths: local-part: {2,64} chars max, domain and subdomains: {1,63} chars max each
 // TLD length: {2,63}
-// Total length of the email of 7 characters min: local-part, 2, the "@", x.xx min for the domain
-// 254 characters max
-// See https://datatracker.ietf.org/doc/html/rfc5321#section-4.5.3.1.1 for references
-// and also https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
+// Total length of the email of 7 characters min: local-part, 2 chars, the "@", x.xx pattern min for the domain
+// The total length of the email string is of 254 characters max
+// See https://datatracker.ietf.org/doc/html/rfc5321#section-4.5.3.1.1 for references,
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
+// and https://www.regular-expressions.info/email.html
 const validateEmail = (mail) => {
   errorFlag = true;
 
@@ -137,11 +153,35 @@ const validateEmail = (mail) => {
       break;
   }
 
-  // first part of an email, the local-part
-  // ^[a-zA-Z]: The caret tells to look for the first character, which has to be a letter, case insensitive.
+  /*
+   first part of an email, the local-part
+   Square brackets [] stands for a character set
+   ^[a-zA-Z]: The caret tells to look for the first character, which has to be a letter, case insensitive.
+   [\w#$%&*+=.-]{0,62}:
+          \w : alphanumeric characters (english) plus underscore
+          #$%&*+= : individual characters accepted
+   Curly brackets are used to specify a range of min/max characters: {min,max}
+   Here, we can have a minimu of 0 to a maximum of 62 characters authorized by the preceding character set
+   [\w#$%&*+=]$: The dollar is looking for the end of the string.
+   Here, we remove dots and dash as they cannot terminate local-part.
+   The ^ and the $ help to avoid space characters inside the string (e.g "te st")
+  */
   const local = /^[a-zA-Z][\w#$%&*+=.-]{0,62}[\w#$%&*+=]$/;
-  // second part, domain
-  const domain = /^(?:(?=[\w-]{1,63}\.)[\w]+(?:-[\w]+)*\.){1,8}[a-zA-Z]{2,63}$/;
+
+  /*
+   second part, domain
+   Here, we use group notation with parenthesis, and peculiarly non-capturing groups
+   to match the entire string: (?:...)
+   (?=[\w-]{1,63}\.): the ?= token is called a "lookaround", more precisely, a "lookahead", which doesn't count for the match
+   It's used for the [\w]+ character set: we need to have a letter/digit/underscore one or more times(with the plus quantifier)
+   but only if it's followed by [\w-]{1,63}\. The dot is escaped, otherwise it matches for a single character
+   After, there is another non-capturing group, which is more or less the same as the lookaround at the begining of the regex.
+   The dash is outside the character range, and the 2nd non capturing group can be repeated 0 or infinitly (with the * quantifier)
+   The first non-capturing group ending with the dot; we can match for instance t-t, t.t but not t.,  t- or t--
+   Finally, there is the last part of the domain, the TLD composed with only letters in a range of {2,63}
+  */
+  const domain =
+    /^(?:(?=[\w-]{1,63}\.)[\w]+(?:-[\w]{1,63})*\.)+[a-zA-Z]{2,63}$/;
 
   // split email to check the parts
   const parts = email.split("@");
@@ -156,6 +196,7 @@ const validateEmail = (mail) => {
       "Votre email ne semble pas valide, merci d'en renseigner un autre";
   }
 
+  // if there is an error message, display it
   if (errorMessage.length) insertErrorMessage(mail, errorMessage);
 
   return errorFlag;
@@ -178,10 +219,10 @@ const validateBirthDate = (date) => {
 
   const minAge = 18;
   const maxAge = 123;
-  const today = new Date();
-  const todayYear = today.getFullYear();
+  const today = new Date(); // Create an object with the date of the day
+  const todayYear = today.getFullYear(); // Get the year of today
   const birthDate = new Date(date.value);
-  const birthYear = birthDate.getFullYear();
+  const birthYear = birthDate.getFullYear(); // Year of birthdate
 
   const age = todayYear - birthYear;
 
@@ -193,18 +234,21 @@ const validateBirthDate = (date) => {
     return false;
   }
 
-  if (age < minAge) errorFlag = false;
+  if (age < minAge) errorFlag = false; // Obviously, the participant is not adult
 
+  // Check if the birtdate has already passed
   if (age === minAge) {
-    const todayMonth = today.getMonth();
-    const birthMonth = birthDate.getMonth();
-    if (todayMonth < birthMonth) errorFlag = false;
+    // We have to check months
+    const todayMonth = today.getMonth(); // get month of today
+    const birthMonth = birthDate.getMonth(); // get the birthday month
+    if (todayMonth < birthMonth) errorFlag = false; // Birthday has not passed
 
     if (todayMonth === birthMonth) {
-      const todayDay = today.getDate();
-      const birthDay = birthDate.getDate();
+      // We have to check days
+      const todayDay = today.getDate(); // Get day of today
+      const birthDay = birthDate.getDate(); // get the birthday day
 
-      if (todayDay < birthDay) errorFlag = false;
+      if (todayDay < birthDay) errorFlag = false; // The participant is not adult
     }
   }
 
@@ -238,13 +282,15 @@ const validateNbContest = (nb) => {
 const validateCity = () => {
   let errorFlag = true;
 
-  radioCheckedList = document.querySelectorAll(".city-choice:checked");
+  // Get all the radio button elements
+  radioCheckedList = document.querySelectorAll(".city-choice:checked"); // Return a NodeList with the elements checked
   if (!radioCheckedList.length) {
-    const lastRadioNode = document.querySelectorAll(".city-choice");
-    const label = lastRadioNode.item(lastRadioNode.length - 1).labels[0];
+    // if there is no element in the NodeList
+    const lastRadioNode = document.querySelectorAll(".city-choice"); // Get all the radio button elements
+    const label = lastRadioNode.item(lastRadioNode.length - 1).labels[0]; // Find the label of the last radio button
     const errorMessage =
       "Merci de sélectionner une ville pour participer à un tournoi";
-    insertErrorMessage(label, errorMessage);
+    insertErrorMessage(label, errorMessage); // Insert the error message after the last element
 
     errorFlag = false;
   }
@@ -256,11 +302,12 @@ const validateCity = () => {
 const validateTerms = () => {
   let errorFlag = true;
 
-  const term = document.getElementById("checkbox1");
+  const term = document.getElementById("checkbox1"); // Get the checkbox element
   if (!term.checked) {
-    const label = term.labels[0];
+    // If this is not accepted
+    const label = term.labels[0]; // Get the associated label
     const errorMessage = "Merci d'accepter les conditions d'utilisation";
-    insertErrorMessage(label, errorMessage);
+    insertErrorMessage(label, errorMessage); // Insert the error message
 
     errorFlag = false;
   }
@@ -268,6 +315,7 @@ const validateTerms = () => {
   return errorFlag;
 };
 
+// Get all the input elements
 const firstName = document.getElementById("first");
 const lastName = document.getElementById("last");
 const email = document.getElementById("email");
@@ -280,18 +328,16 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
 });
 
+// Implement our own submit function, used by validate() when all validations have passed
 const submitForm = () => {
-  form.style.display = "none";
-  //document.querySelector(".btn-submit").style.display = "none";
+  form.style.display = "none"; // Hide the form
 
   const message = document.querySelector(".thanks");
-  message.style.display = "block";
+  message.style.display = "block"; // Display the confirmation message
 
   const closeBtn = document.querySelector(".btn-close");
-  closeBtn.style.display = "block";
-  closeBtn.addEventListener("click", () => form.submit());
-
-  const content = document.querySelector(".content");
+  closeBtn.style.display = "block"; // Display the closing button
+  closeBtn.addEventListener("click", () => form.submit()); // submit the form
 };
 
 const validate = () => {
@@ -299,6 +345,7 @@ const validate = () => {
 
   let errorFlags = [];
 
+  // Validate all the inputs and the required radio/checkbox (or no)
   errorFlags.push(validateNames(firstName, lastName));
   errorFlags.push(validateEmail(email));
   errorFlags.push(validateBirthDate(birthDate));
@@ -306,7 +353,8 @@ const validate = () => {
   errorFlags.push(validateCity());
   errorFlags.push(validateTerms());
 
+  // Find if there is some error ("false" value) in the errorFlags array
   const errorFlag = errorFlags.some((b) => b === false);
 
-  if (!errorFlag) submitForm();
+  if (!errorFlag) submitForm(); // All is okay, so we can submit
 };
