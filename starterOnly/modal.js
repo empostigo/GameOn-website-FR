@@ -138,12 +138,8 @@ const validateEmail = (mail) => {
   }
 
   // first part of an email, the local-part
-  const local = /^(?:(?=[\w-]{1,63}\.?)[\w]+(?:-[\w]+)*\.?)[\w]{0,63}$/;
-  //^[\w]{1,64}(?:(?<=[\w]\.)[\w]{1,63})/;
-  //^[\w]{1,64}((\.(?=[\w]))?((?<!\.)-(?=[\w]))?[\w]{0,61})*
-  //^[\w!#$%&*+/=?^_`{|}~][\w!#$%&*+/=?^_`.{|}~-]{0,62}[\w!#$%&*+/=?^_`{|}~]/;
-  //^[\w!#$%&*+/=?^_`{|}~](?:\.(?=[\w!#$%&*+/=?^_`{|}~-])$){0,62}/;
-  //^[A-Z0-9._%+-]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
+  // ^[a-zA-Z]: The caret tells to look for the first character, which has to be a letter, case insensitive.
+  const local = /^[a-zA-Z][\w#$%&*+=.-]{0,62}[\w#$%&*+=]$/;
   // second part, domain
   const domain = /^(?:(?=[\w-]{1,63}\.)[\w]+(?:-[\w]+)*\.){1,8}[a-zA-Z]{2,63}$/;
 
