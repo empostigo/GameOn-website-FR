@@ -70,7 +70,7 @@ const validateNames = (...names) => {
   let errorFlag = true;
 
   for (let name of names) {
-    if (name.value.length < 2) {
+    if (name.value.trim().length < 2) {
       const label = name.labels[0];
       const text = `Vous devez fournir un ${label.textContent.toLowerCase()} d'au moins deux lettres`;
       insertErrorMessage(name, text);
@@ -107,7 +107,7 @@ const validateEmail = (mail) => {
   minEmailLength = 6;
   maxEmailLength = 254;
 
-  const email = mail.value;
+  const email = mail.value.trim();
   let errorMessage = "";
   switch (true) {
     case email.length === 0: // No email is provided
@@ -137,11 +137,15 @@ const validateEmail = (mail) => {
       break;
   }
 
-  // first part of an email, the local part
-  const local =
-    /^[\w!#$%&*+/=?^_`{|}~][\w!#$%&*+/=?^_`.{|}~-]{0,62}[\w!#$%&*+/=?^_`{|}~]/;
+  // first part of an email, the local-part
+  const local = /^(?:(?=[\w-]{1,63}\.?)[\w]+(?:-[\w]+)*\.?)[\w]{0,63}$/;
+  //^[\w]{1,64}(?:(?<=[\w]\.)[\w]{1,63})/;
+  //^[\w]{1,64}((\.(?=[\w]))?((?<!\.)-(?=[\w]))?[\w]{0,61})*
+  //^[\w!#$%&*+/=?^_`{|}~][\w!#$%&*+/=?^_`.{|}~-]{0,62}[\w!#$%&*+/=?^_`{|}~]/;
+  //^[\w!#$%&*+/=?^_`{|}~](?:\.(?=[\w!#$%&*+/=?^_`{|}~-])$){0,62}/;
+  //^[A-Z0-9._%+-]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
   // second part, domain
-  const domain = /(?:(?=[\w-]{1,63}\.)[\w]+(?:-[\w]+)*\.){1,8}[\w]{2,63}$/;
+  const domain = /^(?:(?=[\w-]{1,63}\.)[\w]+(?:-[\w]+)*\.){1,8}[a-zA-Z]{2,63}$/;
 
   // split email to check the parts
   const parts = email.split("@");
