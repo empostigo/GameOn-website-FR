@@ -193,12 +193,6 @@ input {
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
 }
-/* 
-input[data-error]::after {
-    content: attr(data-error);
-    font-size: 0.4em;
-    color: red;
-} */
 .checkbox-label,
 .checkbox2-label {
   position: relative;
@@ -288,8 +282,9 @@ input[data-error]::after {
   transform: rotate(-45deg);
 }
 
+/* Style the confirmation message */
 .thanks {
-  display: none;
+  display: none; /* Hidden by default */
   font-size: 1.54rem;
   text-align: center;
   margin: 50% 0;
@@ -297,6 +292,7 @@ input[data-error]::after {
 .btn-submit,
 .btn-signup,
 .btn-close {
+  /* Add the closing modal button, .btn-close */
   background: #fe142f;
   display: block;
   margin: 0 auto;
@@ -309,6 +305,7 @@ input[data-error]::after {
 }
 
 .btn-close {
+  /* Button is hidden by default */
   display: none;
 }
 /* custom select styles */
@@ -436,7 +433,7 @@ input[data-error]::after {
   grid-column: span 8;
 }
 .hero-img img {
-  object-fit: cover;
+  object-fit: cover; /* gives a better rendering of the image */
   width: 100%;
   height: 100%;
   display: block;
@@ -460,7 +457,7 @@ footer {
 
 @media screen and (max-width: 996px) {
   .hero-headline {
-    font-size: 3em;
+    font-size: 3em; /* Decrease h1 headline font size */
   }
 }
 
