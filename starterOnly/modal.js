@@ -132,7 +132,7 @@ const validateEmail = (mail) => {
       errorMessage = "Merci de renseigner une adresse de messagerie"
       break
 
-    case !email.includes("@"): // If the string doesn't conatin "@", it's not an email
+    case !email.includes("@"): // If the string doesn't contain "@", it's not an email
       errorFlag = false
       errorMessage =
         'Il semble que votre adresse de messagerie soit mal formée : il manque le caractère "@"'
