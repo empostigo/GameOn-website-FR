@@ -291,8 +291,8 @@ input {
 }
 .btn-submit,
 .btn-signup,
-.btn-close {
-  /* Add the closing modal button, .btn-close */
+.btn-confirm {
+  /* Add the closing modal button, .btn-confirm */
   background: #fe142f;
   display: block;
   margin: 0 auto;
@@ -304,7 +304,7 @@ input {
   border: 0;
 }
 
-.btn-close {
+.btn-confirm {
   /* Button is hidden by default */
   display: none;
 }

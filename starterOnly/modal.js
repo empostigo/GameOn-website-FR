@@ -335,9 +335,9 @@ const submitForm = () => {
   const message = document.querySelector(".thanks")
   message.style.display = "block" // Display the confirmation message
 
-  const closeBtn = document.querySelector(".btn-close")
-  closeBtn.style.display = "block" // Display the closing button
-  closeBtn.addEventListener("click", () => form.submit()) // submit the form
+  const confirmBtn = document.querySelector(".btn-confirm")
+  confirmBtn.style.display = "block" // Display the closing button
+  confirmBtn.addEventListener("click", () => form.submit()) // submit the form
 }
 
 const validate = () => {
