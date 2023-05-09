@@ -158,16 +158,19 @@ const validateEmail = (mail) => {
    first part of an email, the local-part
    Square brackets [] stands for a character set
    ^[a-zA-Z]: The caret tells to look for the first character, which has to be a letter, case insensitive.
-   [\w#$%&*+=.-]{0,62}:
+   [\w#$%&*+=]{0,62}:
           \w : alphanumeric characters (english) plus underscore
           #$%&*+= : individual characters accepted
    Curly brackets are used to specify a range of min/max characters: {min,max}
-   Here, we can have a minimu of 0 to a maximum of 62 characters authorized by the preceding character set
+   Here, we can have a minimum of 0 to a maximum of 62 characters authorized by the preceding character set
+   This part is included in a non-capturing group, and can be preceded with 0 or 1 dash, and followed by 0 or 1 dot.
+   This is to avoid strings like t--est or te...st
+   The entire non-capturing group can be repeated 0 or infinitly.
    [\w#$%&*+=]$: The dollar is looking for the end of the string.
    Here, we remove dots and dash as they cannot terminate local-part.
    The ^ and the $ help to avoid space characters inside the string (e.g "te st")
   */
-  const local = /^[a-zA-Z][\w#$%&*+=.-]{0,62}[\w#$%&*+=]$/
+  const local = /^[a-zA-Z](?:(?:-?[\w#$%&*+=]{1,62})*\.?)*[\w#$%&*+=]$/
 
   /*
    second part, domain
