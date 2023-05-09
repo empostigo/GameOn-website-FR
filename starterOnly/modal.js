@@ -121,7 +121,7 @@ const validateNames = (...values) => {
 const validateEmail = (mail) => {
   let errorFlag = true
 
-  const minEmailLength = 6
+  const minEmailLength = 7
   const maxEmailLength = 254
 
   const email = mail.value.trim()
