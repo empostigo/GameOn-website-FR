@@ -170,7 +170,7 @@ const validateEmail = (mail) => {
    Here, we remove dots and dash as they cannot terminate local-part.
    The ^ and the $ help to avoid space characters inside the string (e.g "te st")
   */
-  const local = /^[a-zA-Z](?:(?:-?[\w#$%&*+=]{1,62})*\.?)*[\w#$%&*+=]$/
+  const local = /^[a-zA-Z](?:(?:-?[\w#$%&*+=]{1,62})+\.?)*[\w#$%&*+=]$/
 
   /*
    second part, domain
