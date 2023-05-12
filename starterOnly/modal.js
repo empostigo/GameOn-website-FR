@@ -329,6 +329,7 @@ const numberContests = document.getElementById("quantity")
 const form = document.getElementById("form")
 form.addEventListener("submit", (event) => {
   event.preventDefault()
+  validate()
 })
 
 // Implement our own submit function, used by validate() when all validations have passed
